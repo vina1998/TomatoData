@@ -1,0 +1,15 @@
+---
+title: "Welcome to TomatoData"
+---
+
+## About me
+
+Hi, my name is Vina Thanabalan. I recently graduated with a PhD in cognitive neuroscience. My research focused on analysing neuroimaging (fMRI) data to better understand how the human brain comprehends language beyond lab settings and in the real world, such as while watching movies!
+
+After my PhD, I realised that what I loved even more than brains was statistics. Now, I work for a not-for-profit organisation doing research and evaluation work with community service and public health data.
+
+## About TomatoData
+
+I created TomatoData to document my learnings in statistics and to showcase various projects related to epidemiology and biostatistics.
+
+I chose tomatoes because, much like my love for statistics, my fondness for them grew over time. 🍅

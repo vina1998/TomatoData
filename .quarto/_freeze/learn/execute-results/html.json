@@ -1,0 +1,15 @@
+{
+  "hash": "fa7cb41e0550853eb116f9037ead7bd1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"learn\"\n---\n\n# Learn  \n\nStatistics\n\n\n::: {.cell}\n\n```{.r .cell-code}\nprint(\"hello world\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[1] \"hello world\"\n```\n\n\n:::\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

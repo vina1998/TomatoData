@@ -1,0 +1,177 @@
+---
+title: "Variables and Graphs"
+description: "Back To Basics: Learnings from Chapter 1 of Schaum's Outline of Statistics (Sixth Edition)"
+date: 2026-10-24
+categories: [Variables, Graphs]
+---
+
+### Variables
+
+A variable is a symbol (e.g., *X*) that can assume any of a prescribed set of values, called the *domain* of the variable. A variable that can only assume a single value is known as a *constant* (e.g., Avogadro's constant: 6.02214076 × 10²³). On the other hand, if a variable can theoretically assume any value between two given values, then it is a *continuous variable*, otherwise it is called a *discrete variable*.
+
+For example, for the Number *G* gallons (gal) of water in a washing machine, the variable *G* can assume any value between 0 gal (no water) to the capacity of the washing machine. As such, the variable *G* is continuous. By contrast, for the Number *B* of books on a library shelf, the variable B is discrete as it can only take on discrete values such as 0,1,2,3,... to the maximum number of books that can fit on the shelf.
+
+What about for Country *C* in Europe? In this case, the variable *C* is a discrete (nominal) variable and can take on values such as France or Germany, which may be represented numerically (e.g., France = 1, Germany = 2).
+
+### Rounding of Data
+
+Some rounding procedures are more commonly used in statistics and scientific computing than others, particularly because they can help minimise systematic bias and cumulative rounding errors. For example, take the numbers 4.35, 8.65, 2.95, 12.45, 6.65, 7.55 and 9.75. In summing them directly, we obtain:
+
+```{r}
+ num_list = c(4.35, 8.65, 2.95, 12.45, 6.65, 7.55, 9.75)
+ sum_num_list = sum(num_list)
+ print(sum_num_list)
+```
+
+We can also first round the numbers to the nearest tenth according to the "round-to-even" convention (which is default in R but can be interrupted by floating-point precision, hence we have to write a custom rounding function to get a traditional "round-to-even" output ). Using this procedure, any digit before 5 is rounded to the nearest even integer. In applying this rounding procedure, we obtain:\
+
+```{r}
+# Create a custom function for standard rounding
+bankers_round <- function(x, digits = 1) {
+  scale <- 10^digits
+  round(x * scale) / scale
+}
+
+# Apply the function
+rounded_to_even_num_list <- bankers_round(num_list,1)
+
+print(rounded_to_even_num_list)
+```
+
+Summing these "rounded-to-even" numbers, gives us:\
+
+```{r}
+sum_rounded_to_even_num_list <-  sum(rounded_to_even_num_list)
+print(sum_rounded_to_even_num_list)
+```
+
+Another rounding method "round-half-up" is to increase the digit before 5. In applying this procedure, we get:\
+
+```{r}
+
+# Round up
+rounded_up_num_list <- ceiling(num_list * 10) / 10
+
+#Sum the resulting numbers
+sum_rounded_up_num_list <- sum(rounded_up_num_list)
+print(sum_rounded_up_num_list)
+```
+
+We can see here that using the "round-half-up" method produced a result of 52.7, while the "round-to-even" method produced a result of 52.4, which has a smaller cumulative rounding error relative to the direct sum of 52.35.
+
+While the round-to-even method can help reduce systematic rounding bias by allowing upward and downward rounding errors to balance each other out, it does not guarantee that cumulative rounding errors will cancel out, particularly when rounding errors occur predominantly in one direction.
+
+### Functions and Graphs
+
+We can write functions in R to perform mathematical operations. Base R also supports vectorisation, whereby an operation can be applied to each element of a vector without the need to explicitly write loops.\
+\
+For example, take the linear equation
+
+$$
+Y = 4X - 4
+$$
+
+This relationship can be expressed mathematically as $Y = F(X)$ , where to each value that *X* can assume, there corresponds one and only one value of *Y*.
+
+In R, this relationship can be represented using a function:
+
+```{r}
+
+# Computes a linear transformation over an entire vector simultaneously 
+linear_func <- function(X) {
+  Y <- 4*X - 4
+  return(Y)
+}
+
+# Generate a number sequuence to which we apply the linear transformation
+num_seq <- c(-5:5)
+
+# Apply the fucntion to the number sequence
+linear_eq_result <- linear_func(num_seq)
+
+```
+
+We can also graph the equation as follows:
+
+```{r}
+# Combine X and Y into a dataset to make plotting easier
+df_linear_plot <- data.frame(x = num_seq, y = linear_eq_result)
+
+library(ggplot2)
+
+ggplot(data = df_linear_plot, aes(x = x, y = y)) + geom_point(size = 2, alpha = 0.5) + geom_line() + theme_minimal()
+
+
+```
+
+We can also graph a quadratic equation, which will give us a parabolic curve:
+
+```{r}
+
+# Computes a quadratic transformation over an entire vector simultaneously 
+quadratic_func <- function(X) {
+  Y <- 2*X^2 - 3*X - 9
+  return(Y)
+}
+
+# Generate a number sequuence to which we apply the quadratic transformation
+num_seq <- c(-5:5)
+
+# Apply the fucntion to the number sequence
+quadratic_eq_result <- quadratic_func(num_seq)
+
+# Combine X and Y into a dataset to make plotting easier
+df_quadratic_plot <- data.frame(x = num_seq, y = quadratic_eq_result)
+
+ggplot(data = df_quadratic_plot, aes(x = x, y = y)) + geom_point(size = 2, alpha = 0.5) + geom_line() + theme_minimal()
+
+
+
+
+```
+
+Plots are also helpful to visualise and explore relationships between variables in real-world scenarios. For example, let's simulate a small dataset showing the rise in new diabetes diagnoses from 1997 to 2005.\
+
+```{r}
+
+#n Specify variables
+year <- c(1997:2005)
+millions <- c(0.88,0.90,1.01,1.10,1.20,1.25,1.28,1.36,1.41)
+
+# Combine variables into df to make it easier to plot
+diabetes_rate <- data.frame(year = year, millions = millions)
+
+# Plot the data as a time series to clearly show the trend of rising diabetes diagnoses from 1997 to 205
+ggplot(data = diabetes_rate, aes(x= year, y = millions)) + geom_point(size = 2, alpha = 0.5) + geom_line() + xlab("Year") + ylab("Number of diabetes diagnoses (millions)") + theme_minimal()
+```
+
+But what if we have data that grow exponentially? For example, suppose we are investigating the growth of an infectious disease over 30 days, assuming that the number of cases increases by approximately 20% each day. By simulating these data in R, we obtain the following:\
+
+```{r}
+set.seed(123)
+
+days <- 1:30
+
+cases <- 10 * 1.2^(days - 1) *
+  exp(rnorm(30, mean = 0, sd = 0.15))
+
+epidemic_data <- data.frame(days, cases)
+
+print(epidemic_data)
+```
+
+If we plot this data on a regular linear scale, we obtain:\
+
+```{r}
+ggplot(data = epidemic_data, aes(x= days, y =cases)) + geom_point(size = 2, alpha = 0.5) + geom_line() + theme_minimal()
+```
+
+Notice that due to the large variation in y-values, the data points on the left-hand side of the plot appear compressed, making it difficult to distinguish differences between individual observations. For example, the absolute increase between days 29 and 30 is approximately 997 cases, compared to an increase of only 3 cases between days 1 and 2. Consequently, the larger absolute differences towards the later days of the epidemic are much easier to visualise, while the smaller differences during the earlier days are less apparent.
+
+However, when examining epidemic growth, we may be interested not only in absolute differences but also in relative changes (e.g., percentage increases) over time. One way to better visualise these relative changes is to use a semi-log plot, where the y-axis is represented on a logarithmic scale. Unlike a linear scale, where equal distances represent equal absolute differences, equal distances on a logarithmic scale represent equal ratios. This makes it easier to compare proportional changes across observations of different magnitudes.
+
+```{r}
+ggplot(epidemic_data, aes(x = days, y = cases)) + geom_line() + geom_point() + scale_y_log10() + xlab("Day") + ylab("Number of cases (log10 scale)") + theme_minimal()
+```
+
+When the number of cases is plotted on a logarithmic scale, the previously curved relationship appears approximately linear. This suggests that the number of cases is increasing at a relatively constant proportional rate over time, consistent with exponential growth. Although the absolute increase in cases becomes progressively larger, the relative rate of increase remains approximately constant, as reflected by the roughly linear trend on the semi-log plot.

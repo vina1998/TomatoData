@@ -1,0 +1,91 @@
+/* css styles */
+
+/* ========================================
+   TomatoData
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+
+
+/* Colour palette */
+
+:root {
+  --tomato: #E4573D;
+  --tomato-dark: #B93626;
+  --cream: #FFF9F2;
+  --leaf: #557A46;
+  --ink: #292522;
+}
+
+
+/* Main website */
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+}
+
+
+/* Headings */
+
+h1,
+h2,
+h3 {
+  font-family: "DM Serif Display", serif;
+  color: var(--ink);
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  margin-top: 2rem;
+}
+
+
+/* Navbar */
+
+.navbar {
+  background-color: var(--tomato) !important;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+
+/* TomatoData title */
+
+.navbar-brand {
+  color: white !important;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+
+/* Navbar links */
+
+.navbar-nav .nav-link {
+  color: white !important;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+}
+
+
+/* Navbar links when hovering */
+
+.navbar-nav .nav-link:hover {
+  color: #ffe8df !important;
+}
+
+
+/* Links */
+
+a {
+  color: var(--tomato-dark);
+}
+
+a:hover {
+  color: var(--leaf);
+}
