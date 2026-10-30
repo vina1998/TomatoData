@@ -233,7 +233,7 @@ window.Quarto = {
 </section>
 <section id="rounding-of-data" class="level3">
 <h3 class="anchored" data-anchor-id="rounding-of-data">Rounding of Data</h3>
-<p>Some rounding procedures are better than others, particularly in minimising cumulative rounding errors. For example, take the numbers 4.35, 8.65, 2.95, 12.45, 6.65, 7.55 and 9.75, assuming that these values have been rounded to two decimal places (three to four significant figures). In summing them directly, we obtain:</p>
+<p>Some rounding procedures are more commonly used in statistics and scientific computing than others, particularly because they can help minimise systematic bias and cumulative rounding errors. For example, take the numbers 4.35, 8.65, 2.95, 12.45, 6.65, 7.55 and 9.75. In summing them directly, we obtain:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> num_list <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">4.35</span>, <span class="fl">8.65</span>, <span class="fl">2.95</span>, <span class="fl">12.45</span>, <span class="fl">6.65</span>, <span class="fl">7.55</span>, <span class="fl">9.75</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> sum_num_list <span class="ot">=</span> <span class="fu">sum</span>(num_list)</span>
@@ -242,7 +242,7 @@ window.Quarto = {
 <pre><code>[1] 52.35</code></pre>
 </div>
 </div>
-<p>We can also first round the numbers to the nearest tenth according to the “round-to-even” convention (which is default in R but can be interrupted by floating-point precision, hence we have to write a custom rounding fucntion to get a traditional “round-to-even” output ). Using this procedure, any digit before 5 is rounded to the nearest even integer. In applying this rounding procedure, we obtain:<br>
+<p>We can also first round the numbers to the nearest tenth according to the “round-to-even” convention (which is default in R but can be interrupted by floating-point precision, hence we have to write a custom rounding function to get a traditional “round-to-even” output ). Using this procedure, any digit before 5 is rounded to the nearest even integer. In applying this rounding procedure, we obtain:<br>
 </p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a custom function for standard rounding</span></span>
@@ -282,22 +282,18 @@ window.Quarto = {
 </div>
 </div>
 <p>We can see here that using the “round-half-up” method produced a result of 52.7, while the “round-to-even” method produced a result of 52.4, which has a smaller cumulative rounding error relative to the direct sum of 52.35.</p>
-<p>Another way to think about this is to consider the original values: 4.35, 8.65, 2.95, 12.45, 6.65, 7.55 and 9.75. Given that each of these values has been rounded to two decimal places, they represent any number between a lower and upper boundary (e.g., 4.35 represents any number between 4.345 and 4.355, assuming the round-to-even method). If we sum the lower boundaries of each of these numbers, we get 52.315, while summing the upper boundaries gives us 52.385. Thus, the true sum of these values must lie within:</p>
-<p><span class="math display">\[
-52.315 &lt; S &lt; 52.385
-\]</span></p>
-<p>While both the “round-half-up” and “round-to-even” methods produced sums outside this range (52.7 and 52.4, respectively), the “round-to-even” method produced a smaller cumulative rounding error relative to the direct sum (52.35) compared to the “round-half-up” method. This is one reason why the former is generally preferred, as it helps reduce systematic rounding bias by allowing upward and downward rounding errors to cancel each other out. However, the “round-to-even” method does not guarantee that cumulative rounding errors will cancel out, particularly if rounding errors consistently occur in one direction (either upwards or downwards).</p>
+<p>While the round-to-even method can help reduce systematic rounding bias by allowing upward and downward rounding errors to balance each other out, it does not guarantee that cumulative rounding errors will cancel out, particularly when rounding errors occur predominantly in one direction.</p>
 </section>
 <section id="functions-and-graphs" class="level3">
 <h3 class="anchored" data-anchor-id="functions-and-graphs">Functions and Graphs</h3>
-<p>We can write functions in R that allow us to perform mathematical operations. Base R also allows for vectorisation whereby an operation is applied to each elements in a vector, without having to specify loops.<br>
+<p>We can write functions in R to perform mathematical operations. Base R also supports vectorisation, whereby an operation can be applied to each element of a vector without the need to explicitly write loops.<br>
 <br>
 For example, take the linear equation</p>
 <p><span class="math display">\[
 Y = 4X - 4
 \]</span></p>
-<p>This equation can be written as a function <span class="math inline">\(Y = F(X)\)</span> , where to each value that <em>X</em> can assume, there corresponds one and only one value of <em>Y</em>.</p>
-<p>In R, this operation can be written as a function:</p>
+<p>This relationship can be expressed mathematically as <span class="math inline">\(Y = F(X)\)</span> , where to each value that <em>X</em> can assume, there corresponds one and only one value of <em>Y</em>.</p>
+<p>In R, this relationship can be represented using a function:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Computes a linear transformation over an entire vector simultaneously </span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>linear_func <span class="ot">&lt;-</span> <span class="cf">function</span>(X) {</span>
@@ -309,8 +305,7 @@ Y = 4X - 4
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>num_seq <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">5</span>)</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the fucntion to the number sequence</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>linear_eq_result <span class="ot">&lt;-</span> <span class="fu">linear_func</span>(num_seq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>linear_eq_result <span class="ot">&lt;-</span> <span class="fu">linear_func</span>(num_seq)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can also graph the equation as follows:</p>
 <div class="cell">
@@ -318,7 +313,8 @@ Y = 4X - 4
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df_linear_plot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> num_seq, <span class="at">y =</span> linear_eq_result)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_linear_plot, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_linear_plot, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -327,7 +323,7 @@ Y = 4X - 4
 </div>
 </div>
 </div>
-<p>We can also graph a quadratic equation, which will give us a parabolic curve.</p>
+<p>We can also graph a quadratic equation, which will give us a parabolic curve:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Computes a quadratic transformation over an entire vector simultaneously </span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>quadratic_func <span class="ot">&lt;-</span> <span class="cf">function</span>(X) {</span>
@@ -356,14 +352,15 @@ Y = 4X - 4
 <p>Plots are also helpful to visualise and explore relationships between variables in real-world scenarios. For example, let’s simulate a small dataset showing the rise in new diabetes diagnoses from 1997 to 2005.<br>
 </p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1997</span><span class="sc">:</span><span class="dv">2005</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>millions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.88</span>,<span class="fl">0.90</span>,<span class="fl">1.01</span>,<span class="fl">1.10</span>,<span class="fl">1.20</span>,<span class="fl">1.25</span>,<span class="fl">1.28</span>,<span class="fl">1.36</span>,<span class="fl">1.41</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine variables into df to make it easier to plot</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>diabetes_rate <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year =</span> year, <span class="at">millions =</span> millions)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data as a time series to clearly show the trend of rising diabetes diagnoses from 1997 to 205</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diabetes_rate, <span class="fu">aes</span>(<span class="at">x=</span> year, <span class="at">y =</span> millions)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Number of diabetes diagnoses (millions)"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#n Specify variables</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1997</span><span class="sc">:</span><span class="dv">2005</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>millions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.88</span>,<span class="fl">0.90</span>,<span class="fl">1.01</span>,<span class="fl">1.10</span>,<span class="fl">1.20</span>,<span class="fl">1.25</span>,<span class="fl">1.28</span>,<span class="fl">1.36</span>,<span class="fl">1.41</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine variables into df to make it easier to plot</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>diabetes_rate <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year =</span> year, <span class="at">millions =</span> millions)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data as a time series to clearly show the trend of rising diabetes diagnoses from 1997 to 205</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> diabetes_rate, <span class="fu">aes</span>(<span class="at">x=</span> year, <span class="at">y =</span> millions)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Year"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Number of diabetes diagnoses (millions)"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -372,7 +369,7 @@ Y = 4X - 4
 </div>
 </div>
 </div>
-<p>But what if we have data that grows exponentially? For example, if we are investigating the growth of an infectious disease over 30 days, and we assume that the number of cases grows by approximately 20% each day. By simulating the data, we get:<br>
+<p>But what if we have data that grow exponentially? For example, suppose we are investigating the growth of an infectious disease over 30 days, assuming that the number of cases increases by approximately 20% each day. By simulating these data in R, we obtain the following:<br>
 </p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
